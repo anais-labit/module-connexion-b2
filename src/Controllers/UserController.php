@@ -9,8 +9,13 @@ use App\Models\UserModel;
 
 class UserController
 {
-    function registration($login, $firstname, $lastname, $password)
-    {
+    function registration(
+        string $login,
+        string $firstname,
+        string $lastname,
+        string $password,
+        string $confPassword,
+    ) {
         if (isset($login) && isset($firstname) && isset($lastname) && isset($password)) {
             $login = trim(htmlspecialchars($_POST['login']));
             $firstname = trim(htmlspecialchars($_POST['firstname']));
@@ -27,8 +32,16 @@ class UserController
 
             var_dump($user);
 
-            $user->register($login, $firstname, $lastname, $password);
+            $user->register($login, $firstname, $lastname, $password, $confPassword);
         }
     }
 
+    function loginValidation() : bool {
+        
+    }
+
+    function PasswordValidation() : bool {
+
+
+    }
 }

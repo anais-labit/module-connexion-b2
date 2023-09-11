@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 require_once '../config.php';
 
 class UserModel
@@ -80,6 +81,7 @@ class UserModel
         string $firstname,
         string $lastname,
         string $password,
+        string $confPassword,
     ) {
         $request = "INSERT INTO user (login, firstname, lastname, password) VALUES (:login, :firstname, :lastname, :password)";
         $newUser = connectDb()->prepare($request);
@@ -90,4 +92,15 @@ class UserModel
         $newUser->execute();
     }
 
+    public function checkIfExist(string $login)
+    {
+        $check = connectDb()->prepare('SELECT * FROM users WHERE email = :email');
+        $check->execute(['login' => $login]);
+        $data = $check->fetch();
+        $row = $check->rowCount();
+        if ($row === 1) {
+            return true;
+        } else return false;
+        die();
+    }
 }
