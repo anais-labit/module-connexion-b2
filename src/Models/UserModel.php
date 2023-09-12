@@ -6,12 +6,12 @@ require_once '../config.php';
 
 class UserModel
 {
-
     private ?int $id;
     private ?string $login;
     private ?string $firstname;
     private ?string $lastname;
     private ?string $password;
+    private ?int $row;
 
     public function __construct($id = null, $login = null, $firstname = null, $lastname = null, $password = null)
     {
@@ -67,22 +67,17 @@ class UserModel
         return $this->password;
     }
 
-    // public function setConfPassword($confPassword)
-    // {
-    //     $this->confPassword = $confPassword;
-    // }
-    // public function getConfPassword(): string
-    // {
-    //     return $this->confPassword;
-    // }
+    public function getRow(): ?int
+    {
+        return $this->row;
+    }
 
     public function register(
         string $login,
         string $firstname,
         string $lastname,
         string $password,
-        string $confPassword,
-    ) {
+    ): void {
         $request = "INSERT INTO user (login, firstname, lastname, password) VALUES (:login, :firstname, :lastname, :password)";
         $newUser = connectDb()->prepare($request);
         $newUser->bindParam(':login', $login);
@@ -92,15 +87,10 @@ class UserModel
         $newUser->execute();
     }
 
-    public function checkIfExist(string $login)
+    public function checkIfExist(string $login): void
     {
-        $check = connectDb()->prepare('SELECT * FROM users WHERE email = :email');
+        $check = connectDb()->prepare('SELECT * FROM user WHERE login = :login');
         $check->execute(['login' => $login]);
-        $data = $check->fetch();
-        $row = $check->rowCount();
-        if ($row === 1) {
-            return true;
-        } else return false;
-        die();
+        $this->row = $check->rowCount();
     }
 }

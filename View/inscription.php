@@ -6,7 +6,7 @@ use App\Controllers\UserController;
 
 if (isset($_POST['submit'])) {
     $registration = new UserController;
-    $registration->registration($_POST['login'], $_POST['firstname'], $_POST['lastname'], $_POST['password'], $_POST['confPassword']);
+    $registration->newUser($_POST['login'], $_POST['firstname'], $_POST['lastname'], $_POST['password'], $_POST['confPassword']);
 }
 
 ?>
@@ -103,10 +103,10 @@ if (isset($_POST['submit'])) {
                 <input type="password" name="confPassword" class="form-control" placeholder="Confirmation de mot de passe" required="required" autocomplete="off">
             </div>
             <div class="form-group">
-                <button type="submit" name="submit" class="btn btn-primary btn-block">Inscription</button>
+                <button type="submit" name="submit" class="btn btn-primary btn-block">Sign Up</button>
             </div>
         </form>
-        <p id="generalconnexion" class="text-center"><a href="connexion.php">Connexion</a></p>
+        <p id="generalconnexion" class="text-center"><a href="connexion.php">Sign In</a></p>
     </div>
 </body>
 
