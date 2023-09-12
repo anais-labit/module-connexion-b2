@@ -15,3 +15,4 @@ function connectDb(): PDO
     }
     return $connexion;
 }
+

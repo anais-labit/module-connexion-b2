@@ -6,7 +6,8 @@ use App\Controllers\UserController;
 
 if (isset($_POST['submit'])) {
     $connexion = new UserController;
-    $connexion->checkIfUserExists($_POST['login'], $_POST['password']);
+
+    $message = $connexion->checkIfUserExists($_POST['login'], $_POST['password']);
 }
 ?>
 
@@ -19,18 +20,18 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
-    <script defer src="../script.js"></script>
     <title>Connexion</title>
 </head>
 
 <body>
 
     <div class="login-form">
-        <form id="loginForm" action="" method="post">
+        <form action="" method="post">
             <h2 class="text-center">Connexion</h2>
-
-            <p id="message"></p>
-
+            <?php if (isset($_POST['submit'])) {
+                echo $message;
+            }
+            ?>
             <div class="form-group">
                 <label for="login" id="login"></label>
                 <input type="text" name="login" class="form-control" placeholder="Login" required="required" autocomplete="off">

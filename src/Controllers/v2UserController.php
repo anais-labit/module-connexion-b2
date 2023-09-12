@@ -43,25 +43,29 @@ class UserController
             if (($password === $confPassword) && ($this->passwordValidation($password))) {
                 $newUser = new UserModel();
 
-                $newUser->setLogin($login)
-                    ->setFirstname($firstname)
-                    ->setLastname($lastname)
-                    ->setPassword($hashedPassword);
+                $newUser->setLogin($login);
+                $newUser->setFirstname($firstname);
+                $newUser->setLastname($lastname);
+                $newUser->setPassword($hashedPassword);
 
                 $newUser->register($login, $firstname, $lastname, $hashedPassword);
             }
         }
     }
 
-    function checkIfUserExists(string $login, string $password): string|bool
+
+    function checkIfUserExists(string $login, string $password)
     {
+        $message = '';
         $userValidation = new UserModel();
 
         $hashedPassword = $userValidation->getUserPassword($login);
 
         if ($this->loginExists($login) && password_verify($password, $hashedPassword)) {
             session_start();
-            return json_encode(["success" => true, "message" => "Connexion réussie"]);
-        } else return false;
+            $message = 'succes';
+            return $message;
+        }
+
     }
 }

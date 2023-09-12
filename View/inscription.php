@@ -5,6 +5,7 @@ require_once '../vendor/autoload.php';
 use App\Controllers\UserController;
 
 if (isset($_POST['submit'])) {
+    session_start();
     $registration = new UserController;
     $registration->newUser($_POST['login'], $_POST['firstname'], $_POST['lastname'], $_POST['password'], $_POST['confPassword']);
 }
@@ -24,62 +25,6 @@ if (isset($_POST['submit'])) {
 
 <body>
     <div class="login-form">
-        <?php
-        if (isset($_GET['reg_err'])) {
-            $err = htmlspecialchars($_GET['reg_err']);
-
-            switch ($err) {
-                case 'success':
-        ?>
-                    <div class="alert alert-success">
-                        <strong>Succès</strong> Inscription réussie !
-                    </div>
-                <?php
-                    break;
-
-                case 'password':
-                ?>
-                    <div class="alert alert-danger">
-                        <strong>Erreur</strong> Les mots de passe ne correspondent pas
-                    </div>
-                <?php
-                    break;
-
-                case 'email':
-                ?>
-                    <div class="alert alert-danger">
-                        <strong>Erreur</strong> Email non valide
-                    </div>
-                <?php
-                    break;
-
-                case 'firstnamelength':
-                ?>
-                    <div class="alert alert-danger">
-                        <strong>Erreur</strong> Le prénom ne peut excéder 25 caractères
-                    </div>
-                <?php
-                    break;
-
-                case 'lastnamelength':
-                ?>
-                    <div class="alert alert-danger">
-                        <strong>Erreur</strong> Le nom ne peut excéder 25 caractères
-                    </div>
-                <?php
-                    break;
-
-                case 'already':
-                ?>
-                    <div class="alert alert-danger">
-                        <strong>Erreur</strong> Compte déjà existant
-                    </div>
-        <?php
-
-            }
-        }
-        ?>
-
         <form id="register" action="" method="post">
             <h2 class="text-center">Inscription</h2>
             <div class="form-group">
