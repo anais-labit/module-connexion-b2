@@ -31,7 +31,7 @@ class UserController
         string $lastname,
         string $password,
         string $confPassword,
-    ): ?string {
+    ): void {
         if (isset($login) && isset($firstname) && isset($lastname) && isset($password) && isset($confPassword) && (!$this->loginExists($login))) {
             $login = trim(htmlspecialchars($_POST['login']));
             $firstname = trim(htmlspecialchars($_POST['firstname']));
@@ -41,8 +41,6 @@ class UserController
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             if (($password === $confPassword) && ($this->passwordValidation($password))) {
-                $message = '';
-
                 $newUser = new UserModel();
 
                 $newUser->setLogin($login)
@@ -51,29 +49,27 @@ class UserController
                     ->setPassword($hashedPassword);
 
                 $newUser->register($login, $firstname, $lastname, $hashedPassword);
-                $message = 'Inscription réussie';
-                return $message;
             }
-        } else {
-            header('Location: inscription.php');
-        };
+        }
     }
 
-
-    function checkIfUserExists(string $login, string $password): string
+    function checkIfUserExists(string $login, string $password): void
     {
-        $message = '';
         $userValidation = new UserModel();
 
         $hashedPassword = $userValidation->getUserPassword($login);
-
+        
         if ($this->loginExists($login) && password_verify($password, $hashedPassword)) {
-            session_start();
-            $message = 'Connexion réussie';
-            return $message;
+
+            echo json_encode([
+                "success" => true,
+                "message" => "Connexion réussie. Vous allez être redirigé(e)."
+            ]);
         } else {
-            $message = 'Informations incorrectes';
-            return $message;
+            echo json_encode([
+                "success" => false,
+                "message" => "Informations incorrectes."
+            ]);
         }
     }
 }
