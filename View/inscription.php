@@ -5,9 +5,8 @@ require_once '../vendor/autoload.php';
 use App\Controllers\UserController;
 
 if (isset($_POST['submit'])) {
-    session_start();
     $registration = new UserController;
-    $registration->newUser($_POST['login'], $_POST['firstname'], $_POST['lastname'], $_POST['password'], $_POST['confPassword']);
+    $message = $registration->newUser($_POST['login'], $_POST['firstname'], $_POST['lastname'], $_POST['password'], $_POST['confPassword']);
 }
 
 ?>
@@ -27,6 +26,11 @@ if (isset($_POST['submit'])) {
     <div class="login-form">
         <form id="register" action="" method="post">
             <h2 class="text-center">Inscription</h2>
+            <?php if (isset($_POST['submit'])) {
+                echo $message;
+                die();
+            }
+            ?>
             <div class="form-group">
                 <label for="login" id="login"></label>
                 <input type="text" name="login" class="form-control" placeholder="Login" required="required" autocomplete="off">
