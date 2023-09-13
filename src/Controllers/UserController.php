@@ -49,6 +49,16 @@ class UserController
                     ->setPassword($hashedPassword);
 
                 $newUser->register($login, $firstname, $lastname, $hashedPassword);
+
+                echo json_encode([
+                    "success" => true,
+                    "message" => "Inscription réussie. Vous allez être redirigé(e)."
+                ]);
+            } else {
+                echo json_encode([
+                    "success" => false,
+                    "message" => "Informations incorrectes."
+                ]);
             }
         }
     }
@@ -58,7 +68,7 @@ class UserController
         $userValidation = new UserModel();
 
         $hashedPassword = $userValidation->getUserPassword($login);
-        
+
         if ($this->loginExists($login) && password_verify($password, $hashedPassword)) {
 
             echo json_encode([
