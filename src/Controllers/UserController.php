@@ -54,12 +54,12 @@ class UserController
                     "success" => true,
                     "message" => "Inscription réussie. Vous allez être redirigé(e)."
                 ]);
-            } else {
-                echo json_encode([
-                    "success" => false,
-                    "message" => "Informations incorrectes."
-                ]);
             }
+        } else {
+            echo json_encode([
+                "success" => false,
+                "message" => "Une erreur s'est produite."
+            ]);
         }
     }
 

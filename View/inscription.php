@@ -4,9 +4,10 @@ require_once '../vendor/autoload.php';
 
 use App\Controllers\UserController;
 
-if (isset($_POST['submit'])) {
+if (isset($_POST['submitForm'])) {
     $registration = new UserController;
-    $message = $registration->newUser($_POST['login'], $_POST['firstname'], $_POST['lastname'], $_POST['password'], $_POST['confPassword']);
+    $registration->newUser($_POST['login'], $_POST['firstname'], $_POST['lastname'], $_POST['password'], $_POST['confPassword']);
+    die();
 }
 
 ?>
@@ -25,8 +26,10 @@ if (isset($_POST['submit'])) {
 
 <body>
     <div class="login-form">
-        <form id="register" action="" method="post">
+        <form id="registerForm" action="" method="post">
             <h2 class="text-center">Inscription</h2>
+            <p id="message"></p>
+
             <div class="form-group">
                 <label for="login" id="login"></label>
                 <input type="text" name="login" class="form-control" placeholder="Login" required="required" autocomplete="off">
@@ -48,7 +51,7 @@ if (isset($_POST['submit'])) {
                 <input type="password" name="confPassword" class="form-control" placeholder="Confirmation de mot de passe" required="required" autocomplete="off">
             </div>
             <div class="form-group">
-                <button type="submit" name="submit" class="btn btn-primary btn-block">Sign Up</button>
+                <button type="submit" name="submit" class="btn btn-primary btn-block" id="signUpBtn">Sign Up</button>
             </div>
         </form>
         <p id="generalconnexion" class="text-center"><a href="connexion.php">Sign In</a></p>
