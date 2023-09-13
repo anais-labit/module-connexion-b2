@@ -98,6 +98,7 @@ class UserModel
         $check->bindValue(':login', $login);
         $check->execute();
         $this->row = $check->rowCount();
+
     }
 
     public function getUserPassword(string $login)
