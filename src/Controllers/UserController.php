@@ -54,6 +54,11 @@ class UserController
                     "success" => true,
                     "message" => "Inscription réussie. Vous allez être redirigé(e)."
                 ]);
+            } else if ($this->loginExists($login)) {
+                echo json_encode([
+                    "success" => false,
+                    "message" => "Ce login n'est pas disponible."
+                ]);
             }
         } else {
             echo json_encode([
@@ -70,7 +75,6 @@ class UserController
         $hashedPassword = $userValidation->getUserPassword($login);
 
         if ($this->loginExists($login) && password_verify($password, $hashedPassword)) {
-
             echo json_encode([
                 "success" => true,
                 "message" => "Connexion réussie. Vous allez être redirigé(e)."
@@ -81,5 +85,12 @@ class UserController
                 "message" => "Informations incorrectes."
             ]);
         }
+    }
+
+    function logOut(): void
+    {
+        unset($_SESSION);
+        session_destroy();
+        // header('Location:../../index.php');
     }
 }

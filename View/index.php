@@ -1,7 +1,18 @@
 <?php
+
+use App\Controllers\UserController;
+use App\Models\UserModel;
+
+session_start();
 require_once '../config.php';
 require_once '../vendor/autoload.php';
-connectDb();
+
+if (isset($_GET['logOut'])) {
+    $logOut = new UserController();
+    $logOut->logOut();
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -12,48 +23,47 @@ connectDb();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faux Site</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
+<header class="gl-header"> <?php include './includes/header.php' ?></header>
+
 <body>
+    <div class="page">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <?php if (isset($_SESSION['login'])) { ?>
+                        <h1>Bienvenue <?php echo ucfirst($_SESSION['login']) ?></h1>
+                        <p>Ceci est un exemple de page d'accueil pour un faux site créé avec Bootstrap.</p>
+                        <a href="./profil.php" class="btn btn-primary">Gérer mon profil</a>
+                    <?php } else { ?>
+                        <h1>Bienvenue sur Faux Site</h1>
+                        <p>Ceci est un exemple de page d'accueil pour un faux site créé avec Bootstrap.</p>
+                        <a href="./inscription.php" class="btn btn-primary">Créer un compte</a>
+                    <?php  } ?>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Faux Site</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Accueil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">À Propos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+                </div>
 
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <h1>Bienvenue sur Faux Site</h1>
-                <p>Ceci est un exemple de page d'accueil pour un faux site créé avec Bootstrap.</p>
-                <a href="#" class="btn btn-primary">En savoir plus</a>
-            </div>
-            <div class="col-md-6">
-                <img src="https://via.placeholder.com/400" alt="Image de présentation" class="img-fluid">
+                <div class="col-md-6">
+                    <img src="https://via.placeholder.com/400" alt="Image de présentation" class="img-fluid">
+                </div>
             </div>
         </div>
     </div>
 
+
+    <footer class="bg-dark text-light text-center py-3">
+        <?php include './includes/footer.php'; ?></footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialise Bootstrap
+            $('[data-bs-toggle="collapse"]').collapse();
+        });
+    </script>
 
 </body>
 

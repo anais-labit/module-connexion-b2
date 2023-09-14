@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../config.php';
 require_once '../vendor/autoload.php';
 
@@ -7,6 +8,8 @@ use App\Controllers\UserController;
 if (isset($_POST['submitForm'])) {
     $registration = new UserController;
     $registration->newUser($_POST['login'], $_POST['firstname'], $_POST['lastname'], $_POST['password'], $_POST['confPassword']);
+    // pour check si le login est déjà pris 
+    // var_dump( $registration->loginExists($_POST['login']));
     die();
 }
 
@@ -20,9 +23,11 @@ if (isset($_POST['submitForm'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/style.css">
-    <script defer src="./javascript/script.js"></script>
+    <script defer src="./javascript/register.js"></script>
     <title>Registration</title>
 </head>
+
+<header class="gl-header"> <?php include './includes/header.php' ?></header>
 
 <body>
     <div class="login-form">
@@ -33,6 +38,7 @@ if (isset($_POST['submitForm'])) {
             <div class="form-group">
                 <label for="login" id="login"></label>
                 <input type="text" name="login" class="form-control" placeholder="Login" required="required" autocomplete="off">
+                <p id="loginErr"></p>
             </div>
             <div class="form-group">
                 <label for="firstname" id="firstname"></label>
@@ -56,6 +62,8 @@ if (isset($_POST['submitForm'])) {
         </form>
         <p id="generalconnexion" class="text-center"><a href="connexion.php">Sign In</a></p>
     </div>
+    <footer class="bg-dark text-light text-center py-3">
+        <?php include './includes/footer.php'; ?></footer>
 </body>
 
 </html>
