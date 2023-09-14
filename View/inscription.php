@@ -9,7 +9,7 @@ if (isset($_POST['submitForm'])) {
     $registration = new UserController;
     $registration->newUser($_POST['login'], $_POST['firstname'], $_POST['lastname'], $_POST['password'], $_POST['confPassword']);
     // pour check si le login est déjà pris 
-    // var_dump( $registration->loginExists($_POST['login']));
+    // var_dump( $registration->loginExists($_POST['login']));        
     die();
 }
 

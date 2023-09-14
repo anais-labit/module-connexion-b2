@@ -22,7 +22,10 @@ async function displayLoginMessage() {
       const container = document.querySelector("#message");
       container.textContent = jsonResponse.message;
 
-      // document.location.assign(profil.php);
+      setTimeout(function () {
+        window.location.href = "index.php";
+      }, 2000);        
+      
     });
   } catch (error) {
     console.error("Une erreur s'est produite :", error);

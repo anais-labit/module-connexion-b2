@@ -21,6 +21,10 @@ async function displayRegisterMessage() {
 
       const container = document.querySelector("#message");
       container.textContent = jsonResponse.message;
+
+      setTimeout(function () {
+        window.location.href = "connexion.php";
+      }, 2000);
     });
   } catch (error) {
     console.error("Une erreur s'est produite :", error);

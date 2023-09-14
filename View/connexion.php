@@ -7,8 +7,7 @@ use App\Controllers\UserController;
 
 if (isset($_POST['submitForm'])) {
     $connexion = new UserController();
-    $connexion->checkIfUserExists($_POST['login'], $_POST['password']);
-    $_SESSION['login'] = $_POST['login'];
+    $connexion->logIn($_POST['login'], $_POST['password']);
     die();
 }
 ?>
@@ -38,7 +37,7 @@ if (isset($_POST['submitForm'])) {
 
                 <div class="form-group">
                     <label for="login" id="login"></label>
-                    <input type="text" name="login" class="form-control" placeholder="Login" required="required" autocomplete="off">
+                    <input type="text" name="login" class="form-control" value="<?= isset($_SESSION['login']) ? $_SESSION['login'] : ''; ?>" placeholder="Login" required="required" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="password" id="password"></label>

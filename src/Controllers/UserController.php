@@ -54,13 +54,15 @@ class UserController
                     "success" => true,
                     "message" => "Inscription réussie. Vous allez être redirigé(e)."
                 ]);
-            } else if ($this->loginExists($login)) {
+                $_SESSION['login'] = $_POST['login'];
+            } else if ($this->loginExists($login) === true) {
                 echo json_encode([
                     "success" => false,
                     "message" => "Ce login n'est pas disponible."
                 ]);
             }
         } else {
+            var_dump($this->loginExists($login));
             echo json_encode([
                 "success" => false,
                 "message" => "Une erreur s'est produite."
@@ -68,17 +70,21 @@ class UserController
         }
     }
 
-    function checkIfUserExists(string $login, string $password): void
+    function logIn(string $login, string $password): void
     {
         $userValidation = new UserModel();
 
-        $hashedPassword = $userValidation->getUserPassword($login);
+        $userInfos = $userValidation->getUserInfos($login);
+
+        $hashedPassword = $userInfos['password'];
 
         if ($this->loginExists($login) && password_verify($password, $hashedPassword)) {
             echo json_encode([
                 "success" => true,
                 "message" => "Connexion réussie. Vous allez être redirigé(e)."
             ]);
+            $_SESSION['login'] = $_POST['login'];
+            $this->setSession($_POST['login']);
         } else {
             echo json_encode([
                 "success" => false,
@@ -87,10 +93,19 @@ class UserController
         }
     }
 
+    function setSession($login): void
+    {
+        $getUserInfos = new UserModel();
+        $userInfos = $getUserInfos->getUserInfos($login);
+        $_SESSION['firstname'] = $userInfos['firstname'];
+        $_SESSION['lastname'] = $userInfos['lastname'];
+    }
+
+
     function logOut(): void
     {
         unset($_SESSION);
         session_destroy();
-        // header('Location:../../index.php');
+        header('Location:index.php');
     }
 }

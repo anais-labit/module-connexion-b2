@@ -101,15 +101,15 @@ class UserModel
 
     }
 
-    public function getUserPassword(string $login)
+    public function getUserInfos(string $login)
     {
-        $getUserPassword = connectDb()->prepare('SELECT password FROM user WHERE login = :login');
-        $getUserPassword->bindValue(':login', $login);
-        $getUserPassword->execute();
-        $userPassword = $getUserPassword->fetch();
+        $getUserInfos = connectDb()->prepare('SELECT * FROM user WHERE login = :login');
+        $getUserInfos->bindValue(':login', $login);
+        $getUserInfos->execute();
+        $userInfos = $getUserInfos->fetch();
 
-        if (empty($userPassword)) {
+        if (empty($userInfos)) {
             return null;
-        } else return $userPassword['password'];
+        } else return $userInfos;
     }
 }

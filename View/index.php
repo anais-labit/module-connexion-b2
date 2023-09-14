@@ -24,10 +24,9 @@ if (isset($_GET['logOut'])) {
     <title>Faux Site</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<header class="gl-header"> <?php include './includes/header.php' ?></header>
+<header> <?php include './includes/header.php' ?></header>
 
 <body>
     <div class="page">
@@ -35,7 +34,7 @@ if (isset($_GET['logOut'])) {
             <div class="row">
                 <div class="col-md-6">
                     <?php if (isset($_SESSION['login'])) { ?>
-                        <h1>Bienvenue <?php echo ucfirst($_SESSION['login']) ?></h1>
+                        <h1>Bienvenue <?php echo ucwords($_SESSION['login']) ?></h1>
                         <p>Ceci est un exemple de page d'accueil pour un faux site créé avec Bootstrap.</p>
                         <a href="./profil.php" class="btn btn-primary">Gérer mon profil</a>
                     <?php } else { ?>
@@ -56,15 +55,6 @@ if (isset($_GET['logOut'])) {
 
     <footer class="bg-dark text-light text-center py-3">
         <?php include './includes/footer.php'; ?></footer>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Initialise Bootstrap
-            $('[data-bs-toggle="collapse"]').collapse();
-        });
-    </script>
-
 </body>
 
 </html>
