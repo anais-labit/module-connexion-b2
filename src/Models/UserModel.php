@@ -126,10 +126,12 @@ class UserModel
 
         //Conversion du tableau en string
         $requestString = implode(', ', $requestString);
-        
+
         $requestUpdateOne = "UPDATE user SET $requestString WHERE login = :login";
         $queryUpdateOne = connectDb()->prepare($requestUpdateOne);
+        var_dump($queryUpdateOne);
         $queryUpdateOne->execute($params);
+
 
 
     }

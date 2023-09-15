@@ -35,7 +35,7 @@ if (isset($_POST['submitForm'])) {
                 <p id="message"></p>
                 <div class="form-group">
                     <label for="login" id="login"></label>
-                    <input type="text" name="login" class="form-control" value="<?= isset($_SESSION['user']) ? $_SESSION['user']->getLogin() : ''; ?>" placeholder="Login" required="required" autocomplete="off">
+                    <input type="text" name="login" class="form-control" value="<?= isset($_SESSION['welcomeLogin']) ? $_SESSION['welcomeLogin'] : ''; ?>" placeholder="Login" required="required" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="password" id="password"></label>

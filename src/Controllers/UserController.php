@@ -52,14 +52,7 @@ class UserController
             if (($password === $confPassword) && ($this->passwordValidation($password))) {
                 $newUser = new UserModel();
 
-                $newUser->setLogin($login)
-                    ->setFirstname($firstname)
-                    ->setLastname($lastname)
-                    ->setPassword($hashedPassword);
-
-                $this->user = $newUser;
-
-                $this->setSession();
+                $_SESSION['welcomeLogin'] = $_POST['login'];
 
                 $newUser->register($login, $firstname, $lastname, $hashedPassword);
 
@@ -92,6 +85,19 @@ class UserController
 
         $userInfos = $userValidation->getUserInfos($login);
 
+        $user = $userValidation;
+        $firstname = $userValidation->getUserInfos($login)['firstname'];
+        $lastname = $userValidation->getUserInfos($login)['lastname'];
+        $hashedPassword = $userValidation->getUserInfos($login)['password'];
+
+        $user->setLogin($login)
+            ->setFirstname($firstname)
+            ->setLastname($lastname)
+            ->setPassword($hashedPassword);
+
+        $this->user = $user;
+        $this->setSession();
+
         $hashedPassword = $userInfos['password'];
 
         if (empty($login) || empty($password)) {
@@ -100,9 +106,7 @@ class UserController
                 "message" => "Renseignez votre mot de passe."
             ]);
             return;
-        }
-
-        if ($this->loginExists($login) && password_verify($password, $hashedPassword)) {
+        } else if ($this->loginExists($login) && password_verify($password, $hashedPassword)) {
             $_SESSION['login'] = $_POST['login'];
             echo json_encode([
                 "success" => true,
@@ -131,6 +135,7 @@ class UserController
     function updateFields(string $login, array $values)
     {
         $userModel = new UserModel();
+        $isValid = $this->passwordValidation(($values['newPassword']));
 
         if (isset($_POST['newFirstname']) && ($_POST['newFirstname'] !== $_SESSION['user']->getFirstname())) {
             $newFirstname = $_POST['newFirstname'];
@@ -140,11 +145,11 @@ class UserController
             $newLastname = $_POST['newLastname'];
             $valuesToSend[':lastname'] = htmlspecialchars(trim($newLastname));
         }
-        if (($values['newPassword']) !== '' && ($values['confNewPassword']) !== '' && ((($values['newPassword']) === ($values['confNewPassword']))) && ($this->passwordValidation(($values['newPassword'])))) {
+        if (($values['newPassword']) !== '' && ($values['confNewPassword']) !== '' && ((($values['newPassword']) === ($values['confNewPassword']))) && ($isValid)) {
+
+
             $valuesToSend[':password'] = htmlspecialchars(trim(password_hash($values['newPassword'], PASSWORD_DEFAULT)));
         }
-        // Vérification des champs obligatoires
-
         if (empty(trim($_POST['newFirstname'])) || empty(trim($_POST['newLastname'])) || empty(trim($_POST['newPassword']))) {
             $errors[] = 'Certains champs sont vides';
         }

@@ -5,13 +5,10 @@ session_start();
 
 use App\Controllers\UserController;
 
-var_dump($_SESSION);
-
-
 if (isset($_POST['updateProfile'])) {
     $update = new UserController();
     $reqUpdate = $update->updateFields($_SESSION['user']->getLogin(), $_POST);
-    // die();
+    die();
 }
 
 ?>
@@ -38,7 +35,7 @@ if (isset($_POST['updateProfile'])) {
             <form action="profil.php" method="POST" id="updateForm" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="login" class="form-label">Login</label>
-                    <input type="text" class="form-control" id="newLogin" placeholder="<?= ucwords($_SESSION['user']->getLogin()) ?>" readonly>
+                    <input type="text" class="form-control" id="newLogin" placeholder="<?= ($_SESSION['user']->getLogin()) ?>" readonly>
                 </div>
                 <div class="mb-3">
                     <label for="firstname" class="form-label">Prénom</label>
@@ -54,7 +51,7 @@ if (isset($_POST['updateProfile'])) {
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Confirmation nouveau mot de passe</label>
-                    <input type="password" class="form-control" id="confNewPassword" placeholder="Confirmation nouveau mot de passe">
+                    <input type="password" class="form-control" id="confNewPassword" name="confNewPassword" placeholder="Confirmation nouveau mot de passe">
                 </div>
 
                 <button type="submit" name="submit" id="updateButton" class="btn btn-primary">Modifier le Profil</button>

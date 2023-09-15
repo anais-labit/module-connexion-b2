@@ -49,7 +49,7 @@ if (isset($_POST['submitForm'])) {
                 <input type="text" name="lastname" class="form-control" placeholder="Nom" required="required" autocomplete="off">
             </div>
             <div class="form-group">
-                <label style="text-align: justify;" for="password" id="password">Le Mot de passe doit contenir au minimum huit caractères, une majuscule, un chiffre et un caractère spécial.</label>
+                <label style="text-align: justify;" for="password" id="password"></label>
                 <input type="password" name="password" class="form-control" placeholder="Mot de passe" required="required" autocomplete="off">
             </div>
             <div class="form-group">
