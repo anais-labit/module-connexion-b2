@@ -10,7 +10,6 @@ async function displayLoginMessage() {
       event.preventDefault();
       const data = new FormData(form);
       data.append("submitForm", "");
-      console.log(data);
 
       const response = await fetch("connexion.php", {
         method: "POST",
@@ -22,10 +21,15 @@ async function displayLoginMessage() {
       const container = document.querySelector("#message");
       container.textContent = jsonResponse.message;
 
-      setTimeout(function () {
-        window.location.href = "index.php";
-      }, 2000);        
-      
+      if (
+        jsonResponse.message ==
+        "Connexion réussie. Vous allez être redirigé(e)."
+      ) {
+        setTimeout(function () {
+          window.location.href = "profil.php";
+        }, 2000);
+      };
+
     });
   } catch (error) {
     console.error("Une erreur s'est produite :", error);

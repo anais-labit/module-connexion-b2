@@ -1,3 +1,7 @@
+const updateForm = document.querySelector("#updateForm");
+const updateButton = document.querySelector("#updateButton");
+
+
 async function updateSelf() {
   const reqUpdate = new FormData(updateForm);
 
@@ -11,7 +15,7 @@ async function updateSelf() {
     body: reqUpdate,
   };
 
-  const updateUser = await fetch("../src/Routes/user_management.php", options);
+  const updateUser = await fetch("profil.php", options);
   const msg = await updateUser.json();
   console.log(msg.errors);
 
@@ -28,4 +32,3 @@ updateButton.addEventListener("click", async (event) => {
   event.preventDefault();
   updateSelf();
 });
-

@@ -1,7 +1,7 @@
 <?php
-session_start();
 require_once '../config.php';
 require_once '../vendor/autoload.php';
+session_start();
 
 use App\Controllers\UserController;
 
@@ -32,12 +32,10 @@ if (isset($_POST['submitForm'])) {
         <div class="login-form">
             <form id="loginForm" action="" method="post">
                 <h2 class="text-center">Connexion</h2>
-
                 <p id="message"></p>
-
                 <div class="form-group">
                     <label for="login" id="login"></label>
-                    <input type="text" name="login" class="form-control" value="<?= isset($_SESSION['login']) ? $_SESSION['login'] : ''; ?>" placeholder="Login" required="required" autocomplete="off">
+                    <input type="text" name="login" class="form-control" value="<?= isset($_SESSION['user']) ? $_SESSION['user']->getLogin() : ''; ?>" placeholder="Login" required="required" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="password" id="password"></label>

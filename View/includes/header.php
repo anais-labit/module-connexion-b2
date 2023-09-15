@@ -7,12 +7,12 @@
                     <a class="nav-link" href="index.php">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= isset($_SESSION['login']) ? './profil.php' : './connexion.php' ?>">
-                        <?= isset($_SESSION['login']) ? 'Profil' : 'Connexion' ?>
+                    <a class="nav-link" href="<?= isset($_SESSION['user']) ? './profil.php' : './connexion.php' ?>">
+                        <?= isset($_SESSION['user']) ? 'Profil' : 'Connexion' ?>
                     </a>
                 </li>
                 <li id="logOut" class="nav-item">
-                    <?php if (isset($_SESSION['login'])) : ?>
+                    <?php if (isset($_SESSION['user'])) : ?>
                         <a class="nav-link" href="index.php?logOut">Déconnexion</a>
                     <?php endif; ?>
                 </li>

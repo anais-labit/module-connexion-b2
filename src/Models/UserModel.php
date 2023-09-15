@@ -113,5 +113,28 @@ class UserModel
         } else return $userInfos;
     }
 
+    public function updateOne(array $params) {
+        $fieldsToUpdate = $params;
+        array_pop($fieldsToUpdate);
+
+        $requestString = [];
+
+        foreach ($fieldsToUpdate as $key => $value) {
+            $fieldName = str_replace(':', '', $key);
+            $requestString[] = $fieldName . ' = ' . $key;
+        }
+
+        //Conversion du tableau en string
+        $requestString = implode(', ', $requestString);
+        
+        $requestUpdateOne = "UPDATE user SET $requestString WHERE login = :login";
+        $queryUpdateOne = connectDb()->prepare($requestUpdateOne);
+        $queryUpdateOne->execute($params);
+
+
+    }
+
+
+
     
 }
