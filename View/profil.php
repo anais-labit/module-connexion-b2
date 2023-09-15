@@ -1,17 +1,20 @@
 <?php
-session_start();
 require_once '../config.php';
 require_once '../vendor/autoload.php';
+session_start();
 
 use App\Controllers\UserController;
+use App\Models\UserModel;
 
-if (isset($_POST['submitForm'])) {
-    // $connexion = new UserController();
-    // $connexion->logIn($_POST['login'], $_POST['password']);
-    // die();
-}
 
-var_dump($_SESSION);
+// if (isset($_POST['submit'])) {
+//     $update = new UserController();
+//     $update->updateField($_SESSION['login']);
+//     // var_dump($update->updateField($_SESSION['login']));
+//     // var_dump($update);
+//     // die();
+// }
+
 ?>
 
 
@@ -34,28 +37,29 @@ var_dump($_SESSION);
     <div class="page">
         <div class="container mt-5">
             <h1>Gestion du Profil</h1>
-            <form>
+            <form method="POST">
                 <div class="mb-3">
                     <label for="login" class="form-label">Login</label>
-                    <input type="text" class="form-control" id="login" placeholder="<?= $_SESSION['login'] ?>" readonly>
+                    <input type="text" class="form-control" id="newLogin" placeholder="<?= $_SESSION['user']->getLogin()?>" readonly>
+
                 </div>
                 <div class="mb-3">
                     <label for="firstname" class="form-label">Prénom</label>
-                    <input type="text" class="form-control" id="firstname" placeholder="<?= $_SESSION['firstname'] ?>">
+                    <input type="text" class="form-control" id="newFirstname" name="newFirstname" placeholder="<?= $_SESSION['user']->getFirstname() ?>">
                 </div>
                 <div class="mb-3">
                     <label for="lastname" class="form-label">Nom de famille</label>
-                    <input type="text" class="form-control" id="lastname" placeholder="<?= $_SESSION['lastname'] ?>">
+                    <input type="text" class="form-control" id="newLastname" name="newLastname" placeholder="<?= $_SESSION['user']->getLastname() ?>">
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Nouveau mot de passe</label>
-                    <input type="password" class="form-control" id="password" placeholder="Nouveau mot de passe">
+                    <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Nouveau mot de passe">
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Confirmation nouveau mot de passe</label>
-                    <input type="password" class="form-control" id="confPassword" placeholder="Confirmation nouveau mot de passe">
+                    <input type="password" class="form-control" id="confNewPassword" placeholder="Confirmation nouveau mot de passe">
                 </div>
-                <button type="submit" class="btn btn-primary">Modifier le Profil</button>
+                <button type="submit" name="submit" class="btn btn-primary">Modifier le Profil</button>
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Supprimer le Compte</button>
             </form>
         </div>

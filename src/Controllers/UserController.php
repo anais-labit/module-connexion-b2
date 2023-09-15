@@ -8,6 +8,8 @@ use App\Models\UserModel;
 
 class UserController
 {
+    private $user;
+
     function loginExists($login): bool
     {
         $loginValidation = new UserModel();
@@ -42,11 +44,15 @@ class UserController
 
             if (($password === $confPassword) && ($this->passwordValidation($password))) {
                 $newUser = new UserModel();
-
+                
                 $newUser->setLogin($login)
-                    ->setFirstname($firstname)
-                    ->setLastname($lastname)
-                    ->setPassword($hashedPassword);
+                ->setFirstname($firstname)
+                ->setLastname($lastname)
+                ->setPassword($hashedPassword);
+                
+                $this->user = $newUser;
+
+                $this->setSession();
 
                 $newUser->register($login, $firstname, $lastname, $hashedPassword);
 
@@ -93,19 +99,36 @@ class UserController
         }
     }
 
-    function setSession($login): void
+    function setSession(): void
     {
-        $getUserInfos = new UserModel();
-        $userInfos = $getUserInfos->getUserInfos($login);
-        $_SESSION['firstname'] = $userInfos['firstname'];
-        $_SESSION['lastname'] = $userInfos['lastname'];
+        $_SESSION['user'] = $this->user; 
     }
-
 
     function logOut(): void
     {
         unset($_SESSION);
         session_destroy();
         header('Location:index.php');
+    }
+
+    function updateField(string $login, string $newFirstname = null, string $newLastname = null, string $newPassword = null)
+    {
+        $getUserInfos = new UserModel();
+
+        $login = $getUserInfos->getUserInfos($login)['login'];
+        $password = $getUserInfos->getUserInfos($login)['password'];
+
+        $newFirstname = $_POST['newFirstname'];
+        $newLastname = $_POST['newLastname'];
+
+        $newPassword = $_POST['newPassword'];
+
+        if (isset($_POST['newFirstname'])) {
+            return $newFirstname;
+        } elseif (isset($_POST['newLastname'])) {
+            return $newLastname;
+        } elseif (isset($_POST['newFirstname'])) {
+            return $newPassword;
+        }
     }
 }

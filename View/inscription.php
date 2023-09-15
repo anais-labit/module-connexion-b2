@@ -9,7 +9,8 @@ if (isset($_POST['submitForm'])) {
     $registration = new UserController;
     $registration->newUser($_POST['login'], $_POST['firstname'], $_POST['lastname'], $_POST['password'], $_POST['confPassword']);
     // pour check si le login est déjà pris 
-    // var_dump( $registration->loginExists($_POST['login']));        
+    // var_dump( $registration->loginExists($_POST['login']));  
+          
     die();
 }
 
@@ -49,7 +50,7 @@ if (isset($_POST['submitForm'])) {
                 <input type="text" name="lastname" class="form-control" placeholder="Nom" required="required" autocomplete="off">
             </div>
             <div class="form-group">
-                <label for="password" id="password"></label>
+                <label style="text-align: justify;" for="password" id="password">Le Mot de passe doit contenir au minimum huit caractères, une majuscule, un chiffre et un caractère spécial.</label>
                 <input type="password" name="password" class="form-control" placeholder="Mot de passe" required="required" autocomplete="off">
             </div>
             <div class="form-group">
