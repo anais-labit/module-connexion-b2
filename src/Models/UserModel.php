@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
-require_once '../config.php';
+use App\Models\Database;
+use PDO;
+
+// require_once '../config.php';
 
 class UserModel
 {
@@ -89,6 +92,12 @@ class UserModel
         return $this->role;
     }
 
+    public function connectDb(): PDO
+    {
+        $conn = new DatabaseModel;
+        return $conn->connect();
+    }
+
     public function register(
         string $login,
         string $firstname,
@@ -96,7 +105,7 @@ class UserModel
         string $password,
     ): void {
         $request = "INSERT INTO user (login, firstname, lastname, password, role) VALUES (:login, :firstname, :lastname, :password, :role)";
-        $newUser = connectDb()->prepare($request);
+        $newUser = $this->connectDb()->prepare($request);
         $newUser->bindValue(':login', $login);
         $newUser->bindValue(':firstname', $firstname);
         $newUser->bindValue(':lastname', $lastname);
@@ -107,7 +116,7 @@ class UserModel
 
     public function checkIfLoginExists(string $login): void
     {
-        $check = connectDb()->prepare('SELECT * FROM user WHERE login = :login');
+        $check = $this->connectDb()->prepare('SELECT * FROM user WHERE login = :login');
         $check->bindValue(':login', $login);
         $check->execute();
         $this->row = $check->rowCount();
@@ -115,7 +124,7 @@ class UserModel
 
     public function getOneUserInfos(string $login)
     {
-        $getUserInfos = connectDb()->prepare('SELECT * FROM user WHERE login = :login');
+        $getUserInfos = $this->connectDb()->prepare('SELECT * FROM user WHERE login = :login');
         $getUserInfos->bindValue(':login', $login);
         $getUserInfos->execute();
         $userInfos = $getUserInfos->fetch();
@@ -128,7 +137,7 @@ class UserModel
 
     public function getAllUsers(): array
     {
-        $getUsers = connectDb()->prepare("SELECT * from user");
+        $getUsers = $this->connectDb()->prepare("SELECT * from user");
         $getUsers->execute();
         $userInfos = $getUsers->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -152,7 +161,7 @@ class UserModel
         $requestString = implode(', ', $requestString);
 
         $requestUpdateOne = "UPDATE user SET $requestString WHERE login = :login";
-        $queryUpdateOne = connectDb()->prepare($requestUpdateOne);
+        $queryUpdateOne = $this->connectDb()->prepare($requestUpdateOne);
         var_dump($queryUpdateOne);
         $queryUpdateOne->execute($params);
     }
