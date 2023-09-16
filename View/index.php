@@ -5,10 +5,12 @@ use App\Controllers\UserController;
 require_once '../vendor/autoload.php';
 session_start();
 
+$userController = new UserController();
+
 if (isset($_GET['logOut'])) {
-    $logOut = new UserController();
-    $logOut->logOut();
+    $userController->logOut();
 }
+
 
 ?>
 
@@ -23,18 +25,32 @@ if (isset($_GET['logOut'])) {
     <link rel="stylesheet" href="./css/style.css">
 </head>
 
-<header> <?php include './includes/header.php' ?></header>
-
 <body>
+    <header>
+        <?php include './includes/header.php' ?>
+    </header>
+
     <div class="page">
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-12">
                     <?php if (isset($_SESSION['login'])) { ?>
                         <h1>Bienvenue <?php echo ucwords($_SESSION['login']) ?></h1>
-                        <p>Maintenant que vous avez créé votre compte, vous pouvez modifier vos informations personnelles.</p>
-                        <a href="./profil.php" class="btn btn-primary">Gérer mon profil</a>
-                    <?php } else { ?>
+
+                        <?php if ($userController->validateAdminRole()) { ?>
+                            <div class="alert alert-info mt-3">
+                                En tant qu'administrateur, vous avez accès à toutes les données utilisateurs.
+                            </div>
+                            <a href="./admin.php" class="btn btn-primary mt-3">Voir la liste des utilisateurs</a>
+                        <?php } else { ?>
+                            <p>Maintenant que vous avez créé votre compte, vous pouvez modifier vos informations personnelles. </p>
+                            <div class="alert alert-danger">
+                                <p> En tant qu'utilisateur lambda, vous n'avez pas accès aux informations concernant les autres utilisateurs.</p>
+                            </div>
+                            <a href="./profil.php" class="btn btn-primary">Gérer mon profil</a>
+                        <?php
+                        }
+                    } else { ?>
                         <section>
                             <h2>Description du projet :</h2>
                             <p>
@@ -89,16 +105,17 @@ if (isset($_GET['logOut'])) {
                                     J'ai veillé à ce que le site ait une structure HTML correcte et un design soigné grâce à Bootstrap. J'ai choisi un thème adapté à mon projet. De plus, toutes les requêtes ont été sécurisées pour se prémunir contre d'éventuelles attaques.
                                 </p>
                             </div>
+                        </section>
+                    <?php } ?>
                 </div>
-                </section>
-            <?php  } ?>
             </div>
         </div>
     </div>
-    </div>
 
     <footer class="bg-dark text-light text-center py-3">
-        <?php include './includes/footer.php'; ?></footer>
+        <?php include './includes/footer.php'; ?>
+    </footer>
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

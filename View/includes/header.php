@@ -1,10 +1,8 @@
 <?php
 
-use App\Models\UserModel;
+use App\Controllers\UserController;
 
-$role = new UserModel();
-
-// var_dump($_SESSION['user']->getRole());
+$role = new UserController();
 
 ?>
 
@@ -18,10 +16,7 @@ $role = new UserModel();
                 </li>
                 <li class="nav-item">
                     <?php if (isset($_SESSION['user'])) : ?>
-                        <?php if (
-                            $_SESSION['user']->getRole()
-                            === 1
-                        ) : ?>
+                        <?php if ($role->validateAdminRole()) : ?>
                             <a class="nav-link" href="./admin.php">Admin</a>
                         <?php else : ?>
                             <a class="nav-link" href="./profil.php">Profil</a>
