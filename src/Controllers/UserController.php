@@ -83,17 +83,19 @@ class UserController
     {
         $userValidation = new UserModel();
 
-        $userInfos = $userValidation->getUserInfos($login);
+        $userInfos = $userValidation->getOneUserInfos($login);
 
         $user = $userValidation;
-        $firstname = $userValidation->getUserInfos($login)['firstname'];
-        $lastname = $userValidation->getUserInfos($login)['lastname'];
-        $hashedPassword = $userValidation->getUserInfos($login)['password'];
+        $firstname = $userValidation->getOneUserInfos($login)['firstname'];
+        $lastname = $userValidation->getOneUserInfos($login)['lastname'];
+        $hashedPassword = $userValidation->getOneUserInfos($login)['password'];
+        $role = $userValidation->getOneUserInfos($login)['role'];
 
         $user->setLogin($login)
             ->setFirstname($firstname)
             ->setLastname($lastname)
-            ->setPassword($hashedPassword);
+            ->setPassword($hashedPassword)
+            ->setRole($role);
 
         $this->user = $user;
         $this->setSession();
@@ -146,32 +148,34 @@ class UserController
             $valuesToSend[':lastname'] = htmlspecialchars(trim($newLastname));
         }
         if (($values['newPassword']) !== '' && ($values['confNewPassword']) !== '' && ((($values['newPassword']) === ($values['confNewPassword']))) && ($isValid)) {
-
-
             $valuesToSend[':password'] = htmlspecialchars(trim(password_hash($values['newPassword'], PASSWORD_DEFAULT)));
         }
         if (empty(trim($_POST['newFirstname'])) || empty(trim($_POST['newLastname'])) || empty(trim($_POST['newPassword']))) {
             $errors[] = 'Certains champs sont vides';
         }
 
-        $errors = []; // initialisation du tableau d'erreurs
-        // Le code à exécuter si aucune erreur n'a été trouvée
+        $errors = [];
         if (empty($errors)) {
-            // Ajout de l'id à envoyer à la base de données
             $valuesToSend[':login'] = $login;
-            // Envoi des valeurs modifiées à la base de données
             $userModel->updateOne($valuesToSend);
-            // mise à jour de la session
             $_SESSION['user']->setFirstname($_POST['newFirstname']);
             $_SESSION['user']->setLastname($_POST['newLastname']);
             $_SESSION['user']->setPassword($_POST['newPassword']);
 
             header('Content-Type: application/json');
             echo (json_encode(['success' => 'Les mises à jour ont bien été prises en compte.']));
-            // Le code à exécuter si des erreurs ont été trouvées
         } else {
             header('Content-Type: application/json');
             echo (json_encode(['errors' => $errors]));
         }
+    }
+
+    function displayUsers(): array
+    {
+
+        $userInfos = new UserModel();
+        $result = $userInfos->getAllUsers();
+
+        return $result;
     }
 }

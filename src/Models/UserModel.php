@@ -12,14 +12,16 @@ class UserModel
     private ?string $lastname;
     private ?string $password;
     private ?int $row;
+    private ?int $role;
 
-    public function __construct($id = null, $login = null, $firstname = null, $lastname = null, $password = null)
+    public function __construct($id = null, $login = null, $firstname = null, $lastname = null, $password = null, $role = null)
     {
         $this->id = $id;
         $this->login = $login;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
         $this->password = $password;
+        $this->role = $role;
     }
 
     public function setId(?int $id): UserModel
@@ -77,18 +79,29 @@ class UserModel
         return $this->row;
     }
 
+    public function setRole(?int $role): UserModel
+    {
+        $this->role = $role;
+        return $this;
+    }
+    public function getRole(): ?int
+    {
+        return $this->role;
+    }
+
     public function register(
         string $login,
         string $firstname,
         string $lastname,
         string $password,
     ): void {
-        $request = "INSERT INTO user (login, firstname, lastname, password) VALUES (:login, :firstname, :lastname, :password)";
+        $request = "INSERT INTO user (login, firstname, lastname, password, role) VALUES (:login, :firstname, :lastname, :password, :role)";
         $newUser = connectDb()->prepare($request);
         $newUser->bindValue(':login', $login);
         $newUser->bindValue(':firstname', $firstname);
         $newUser->bindValue(':lastname', $lastname);
         $newUser->bindValue(':password', $password);
+        $newUser->bindValue(':role', 2);
         $newUser->execute();
     }
 
@@ -98,10 +111,9 @@ class UserModel
         $check->bindValue(':login', $login);
         $check->execute();
         $this->row = $check->rowCount();
-
     }
 
-    public function getUserInfos(string $login)
+    public function getOneUserInfos(string $login)
     {
         $getUserInfos = connectDb()->prepare('SELECT * FROM user WHERE login = :login');
         $getUserInfos->bindValue(':login', $login);
@@ -113,7 +125,20 @@ class UserModel
         } else return $userInfos;
     }
 
-    public function updateOne(array $params) {
+
+    public function getAllUsers(): array
+    {
+        $getUsers = connectDb()->prepare("SELECT * from user");
+        $getUsers->execute();
+        $userInfos = $getUsers->fetchAll(\PDO::FETCH_ASSOC);
+
+        if (empty($userInfos)) {
+            return null;
+        } else return $userInfos;
+    }
+
+    public function updateOne(array $params)
+    {
         $fieldsToUpdate = $params;
         array_pop($fieldsToUpdate);
 
@@ -124,19 +149,11 @@ class UserModel
             $requestString[] = $fieldName . ' = ' . $key;
         }
 
-        //Conversion du tableau en string
         $requestString = implode(', ', $requestString);
 
         $requestUpdateOne = "UPDATE user SET $requestString WHERE login = :login";
         $queryUpdateOne = connectDb()->prepare($requestUpdateOne);
         var_dump($queryUpdateOne);
         $queryUpdateOne->execute($params);
-
-
-
     }
-
-
-
-    
 }

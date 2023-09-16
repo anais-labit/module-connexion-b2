@@ -16,6 +16,10 @@ async function displayLoginMessage() {
         body: data,
       });
 
+      console.log(data);
+
+      const loginValue = data.get("login");
+
       const jsonResponse = await response.json();
 
       const container = document.querySelector("#message");
@@ -24,12 +28,18 @@ async function displayLoginMessage() {
       if (
         jsonResponse.message ==
         "Connexion réussie. Vous allez être redirigé(e)."
-      ) {
-        setTimeout(function () {
-          window.location.href = "profil.php";
-        }, 2000);
-      };
-
+      )
+        if (loginValue === "admiN1337$") {
+          setTimeout(function () {
+            window.location.href = "admin.php";
+          }, 2000);
+        } else {
+          {
+            setTimeout(function () {
+              window.location.href = "profil.php";
+            }, 2000);
+          }
+        }
     });
   } catch (error) {
     console.error("Une erreur s'est produite :", error);
