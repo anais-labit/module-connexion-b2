@@ -136,38 +136,28 @@ class UserController
 
     function updateFields(string $login, array $values)
     {
+
         $userModel = new UserModel();
         $isValid = $this->passwordValidation(($values['newPassword']));
 
         if (isset($_POST['newFirstname']) && ($_POST['newFirstname'] !== $_SESSION['user']->getFirstname())) {
-            $newFirstname = $_POST['newFirstname'];
-            $valuesToSend[':firstname'] = htmlspecialchars(trim($newFirstname));
+            $newFirstname = htmlspecialchars(trim($_POST['newFirstname']));
+            $valuesToSend[':firstname'] = $newFirstname;
         }
         if (isset($_POST['newLastname']) && ($_POST['newLastname'] !== $_SESSION['user']->getLastname())) {
-            $newLastname = $_POST['newLastname'];
-            $valuesToSend[':lastname'] = htmlspecialchars(trim($newLastname));
+            $newLastname = htmlspecialchars(trim($_POST['newLastname']));
+            $valuesToSend[':lastname'] = $newLastname;
         }
         if (($values['newPassword']) !== '' && ($values['confNewPassword']) !== '' && ((($values['newPassword']) === ($values['confNewPassword']))) && ($isValid)) {
             $valuesToSend[':password'] = htmlspecialchars(trim(password_hash($values['newPassword'], PASSWORD_DEFAULT)));
         }
-        if (empty(trim($_POST['newFirstname'])) || empty(trim($_POST['newLastname'])) || empty(trim($_POST['newPassword']))) {
-            $errors[] = 'Certains champs sont vides';
-        }
 
-        $errors = [];
-        if (empty($errors)) {
-            $valuesToSend[':login'] = $login;
-            $userModel->updateOne($valuesToSend);
-            $_SESSION['user']->setFirstname($_POST['newFirstname']);
-            $_SESSION['user']->setLastname($_POST['newLastname']);
-            $_SESSION['user']->setPassword($_POST['newPassword']);
-
-            header('Content-Type: application/json');
-            echo (json_encode(['success' => 'Les mises à jour ont bien été prises en compte.']));
-        } else {
-            header('Content-Type: application/json');
-            echo (json_encode(['errors' => $errors]));
-        }
+        $valuesToSend[':login'] = $login;
+        $userModel->updateOne($valuesToSend);
+        $_SESSION['user']->setFirstname($_POST['newFirstname']);
+        $_SESSION['user']->setLastname($_POST['newLastname']);
+        $_SESSION['user']->setPassword($_POST['newPassword']);
+        echo json_encode(['message' => 'Les mises à jour ont bien été prises en compte.']);
     }
 
     function validateAdminRole(): bool
@@ -183,5 +173,14 @@ class UserController
         $result = $userInfos->getAllUsers();
 
         return $result;
+    }
+
+    function selfDelete(string $login): void
+    {
+        $delete = new UserModel();
+        $delete->deleteUser($login);
+        echo json_encode(['message' => 'Votre compte a bien été supprimé.']);
+        session_unset();
+        session_destroy();
     }
 }

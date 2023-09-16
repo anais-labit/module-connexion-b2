@@ -9,7 +9,6 @@ if (isset($_POST['submitForm'])) {
     $registration->newUser($_POST['login'], $_POST['firstname'], $_POST['lastname'], $_POST['password'], $_POST['confPassword']);
     die();
 }
-
 ?>
 
 <!DOCTYPE html>

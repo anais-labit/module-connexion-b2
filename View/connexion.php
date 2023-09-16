@@ -4,7 +4,7 @@ session_start();
 
 use App\Controllers\UserController;
 
-if (isset($_POST['submitForm'])) {
+if (isset($_POST['submitForm']) && (!empty($_POST['password']))) {
     $connexion = new UserController();
     $connexion->logIn($_POST['login'], $_POST['password']);
     die();

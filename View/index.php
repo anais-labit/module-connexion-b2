@@ -1,17 +1,15 @@
 <?php
-
-use App\Controllers\UserController;
-
 require_once '../vendor/autoload.php';
 session_start();
+
+use App\Controllers\UserController;
 
 $userController = new UserController();
 
 if (isset($_GET['logOut'])) {
     $userController->logOut();
+    die();
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -19,9 +17,9 @@ if (isset($_GET['logOut'])) {
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faux Site</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
 </head>
 
@@ -43,11 +41,20 @@ if (isset($_GET['logOut'])) {
                             </div>
                             <a href="./admin.php" class="btn btn-primary mt-3">Voir la liste des utilisateurs</a>
                         <?php } else { ?>
-                            <p>Maintenant que vous avez créé votre compte, vous pouvez modifier vos informations personnelles. </p>
+                            <div>
+                                <p>Maintenant que vous avez créé votre compte, vous pouvez modifier vos informations personnelles. </p>
+                                <a href="./profil.php" class="btn btn-primary">Gérer mon profil</a>
+                            </div>
+                            <p><br></p>
                             <div class="alert alert-danger">
                                 <p> En tant qu'utilisateur lambda, vous n'avez pas accès aux informations concernant les autres utilisateurs.</p>
+                                <p>Pour vous connecter en tant qu'administrateur, utilisez les identifiants suivants :
+                                <ul>
+                                    <li>Login : admiN1337$</li>
+                                    <li>Mot de passe : admiN1337$</li>
+                                </ul>
+                                </p>
                             </div>
-                            <a href="./profil.php" class="btn btn-primary">Gérer mon profil</a>
                         <?php
                         }
                     } else { ?>

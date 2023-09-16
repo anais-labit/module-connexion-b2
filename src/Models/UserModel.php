@@ -2,10 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Database;
 use PDO;
-
-// require_once '../config.php';
 
 class UserModel
 {
@@ -25,6 +22,12 @@ class UserModel
         $this->lastname = $lastname;
         $this->password = $password;
         $this->role = $role;
+    }
+
+    public function connectDb(): PDO
+    {
+        $conn = new DatabaseModel;
+        return $conn->connect();
     }
 
     public function setId(?int $id): UserModel
@@ -92,11 +95,6 @@ class UserModel
         return $this->role;
     }
 
-    public function connectDb(): PDO
-    {
-        $conn = new DatabaseModel;
-        return $conn->connect();
-    }
 
     public function register(
         string $login,
@@ -137,7 +135,7 @@ class UserModel
 
     public function getAllUsers(): array
     {
-        $getUsers = $this->connectDb()->prepare("SELECT * from user");
+        $getUsers = $this->connectDb()->prepare("SELECT * from user ");
         $getUsers->execute();
         $userInfos = $getUsers->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -146,7 +144,7 @@ class UserModel
         } else return $userInfos;
     }
 
-    public function updateOne(array $params)
+    public function updateOne(array $params): void
     {
         $fieldsToUpdate = $params;
         array_pop($fieldsToUpdate);
@@ -162,7 +160,14 @@ class UserModel
 
         $requestUpdateOne = "UPDATE user SET $requestString WHERE login = :login";
         $queryUpdateOne = $this->connectDb()->prepare($requestUpdateOne);
-        var_dump($queryUpdateOne);
+        // var_dump($queryUpdateOne);
         $queryUpdateOne->execute($params);
+    }
+
+    public function deleteUser(string $login): void
+    {
+        $deleteUser = $this->connectDb()->prepare("DELETE FROM user WHERE login = :login");
+        $deleteUser->bindValue(':login', $login);
+        $deleteUser->execute();
     }
 }

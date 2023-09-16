@@ -9,12 +9,13 @@ $userController = new UserController();
 
 if (isset($_GET['logOut'])) {
     $userController->logOut();
+    die();
 }
 
 if ($userController->validateAdminRole()) {
     $result = $userController->displayUsers();
+    die();
 }
-
 ?>
 
 <!DOCTYPE html>

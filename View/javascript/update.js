@@ -1,34 +1,23 @@
-const updateForm = document.querySelector("#updateForm");
-const updateButton = document.querySelector("#updateButton");
-
-
-async function updateSelf() {
+async function displayUpdateMessage() {
   const reqUpdate = new FormData(updateForm);
 
   console.log(updateForm);
   reqUpdate.append("updateProfile", "updateProfile");
-
-  console.log(reqUpdate);
 
   const options = {
     method: "POST",
     body: reqUpdate,
   };
 
-  const updateUser = await fetch("profil.php", options);
-  const msg = await updateUser.json();
-  console.log(msg.errors);
+  const updateUser = await fetch("profil.php?updateProfile", options);
+  const jsonResponse = await updateUser.json();
 
-  document.querySelector("#msgContainer");
-  // let msg = document.createElement('p');
-  if (msg.errors) {
-    msgContainer.innerHTML = msg.errors;
-  } else {
-    msgContainer.innerHTML = msg.success;
-  }
+  const container = document.querySelector("#message");
+  container.setAttribute("class", "alert alert-success");
+  container.textContent = jsonResponse.message;
 }
 
 updateButton.addEventListener("click", async (event) => {
   event.preventDefault();
-  updateSelf();
+  displayUpdateMessage();
 });

@@ -21,10 +21,16 @@ async function displayRegisterMessage() {
       const container = document.querySelector("#message");
       container.textContent = jsonResponse.message;
 
-      if (jsonResponse.message == "Inscription réussie. Vous allez être redirigé(e).") {
+      if (
+        jsonResponse.message ==
+        "Inscription réussie. Vous allez être redirigé(e)."
+      ) {
+        container.setAttribute("class", "alert alert-success");
         setTimeout(function () {
           window.location.href = "connexion.php";
         }, 2000);
+      } else {
+        container.setAttribute("class", "alert alert-danger");
       }
     });
   } catch (error) {

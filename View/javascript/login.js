@@ -25,9 +25,12 @@ async function displayLoginMessage() {
         jsonResponse.message ==
         "Connexion réussie. Vous allez être redirigé(e)."
       ) {
+        container.setAttribute("class", "alert alert-success");
         setTimeout(function () {
           window.location.href = "index.php";
         }, 2000);
+      } else {
+        container.setAttribute("class", "alert alert-danger");
       }
     });
   } catch (error) {
