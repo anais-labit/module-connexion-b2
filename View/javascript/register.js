@@ -21,8 +21,6 @@ async function displayRegisterMessage() {
       const container = document.querySelector("#message");
       container.textContent = jsonResponse.message;
 
-      console.log(jsonResponse.message);
-
       if (jsonResponse.message == "Inscription réussie. Vous allez être redirigé(e).") {
         setTimeout(function () {
           window.location.href = "connexion.php";

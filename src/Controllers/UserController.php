@@ -170,9 +170,15 @@ class UserController
         }
     }
 
+    function validateAdminRole(): bool
+    {
+        if ($_SESSION['user']->getRole() === 1) {
+            return true;
+        } else return false;
+    }
+
     function displayUsers(): array
     {
-
         $userInfos = new UserModel();
         $result = $userInfos->getAllUsers();
 

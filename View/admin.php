@@ -6,13 +6,16 @@ require_once '../config.php';
 require_once '../vendor/autoload.php';
 session_start();
 
+$userController = new UserController();
+
 if (isset($_GET['logOut'])) {
-    $logOut = new UserController();
-    $logOut->logOut();
+    $userController->logOut();
 }
 
-$getUsers = new UserController();
-$result = $getUsers->displayUsers();
+if ($userController->validateAdminRole()) {
+    $result = $userController->displayUsers();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -29,29 +32,38 @@ $result = $getUsers->displayUsers();
 <body>
     <header><?php include './includes/header.php' ?></header>
 
-    <div class="container mt-5">
-        <h1 class="text-center">Liste des utilisateurs</h1>
-        <div class="row">
-            <div class="col">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Login</th>
-                            <th>Prénom</th>
-                            <th>Nom de famille</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($result as $user) : ?>
-                            <tr>
-                                <td><?= $user['login'] ?></td>
-                                <td><?= $user['firstname'] ?></td>
-                                <td><?= $user['lastname'] ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+    <div class="page">
+        <div class="container mt-5">
+            <?php if (!$userController->validateAdminRole()) : ?>
+                <div class="alert alert-danger">
+                    Vous n'avez pas accès à ces informations.
+                </div>
+                <a href="profil.php" class="btn btn-primary">Accédez à votre profil</a>
+            <?php else : ?>
+                <h1 class="text-center">Liste des utilisateurs</h1>
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Login</th>
+                                    <th>Prénom</th>
+                                    <th>Nom de famille</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($result as $user) : ?>
+                                    <tr>
+                                        <td><?= $user['login'] ?></td>
+                                        <td><?= $user['firstname'] ?></td>
+                                        <td><?= $user['lastname'] ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 
