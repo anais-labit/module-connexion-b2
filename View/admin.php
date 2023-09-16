@@ -1,9 +1,8 @@
 <?php
-
-use App\Controllers\UserController;
-
 require_once '../vendor/autoload.php';
 session_start();
+
+use App\Controllers\UserController;
 
 $userController = new UserController();
 
@@ -14,7 +13,6 @@ if (isset($_GET['logOut'])) {
 
 if ($userController->validateAdminRole()) {
     $result = $userController->displayUsers();
-    die();
 }
 ?>
 
